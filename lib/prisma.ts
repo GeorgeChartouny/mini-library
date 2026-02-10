@@ -9,8 +9,8 @@ function createPrismaClient(): PrismaClient {
   if (!url) {
     throw new Error("DATABASE_URL is not set");
   }
-  // Resolve file: path to absolute for better-sqlite3
-  const filePath = url.replace(/^file:/, "").trim();
+  // Resolve file: path to absolute for better-sqlite3 (strip query params like ?mode=ro)
+  const filePath = url.replace(/^file:/, "").trim().split("?")[0];
   const absolutePath =
     path.isAbsolute(filePath) || filePath === ":memory:"
       ? filePath

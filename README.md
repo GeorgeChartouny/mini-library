@@ -55,6 +55,20 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+### Troubleshooting: “Sign-in error: Callback” / “attempt to write a readonly database”
+
+If Google sign-in fails with **Callback** and the terminal shows `attempt to write a readonly database` or `SQLITE_READONLY_DBMOVED`, the SQLite file (e.g. `dev.db`) or its folder is not writable. Fix it:
+
+1. **Stop the dev server** (Ctrl+C).
+2. **Make the database and project folder writable** (from the project root):
+   ```bash
+   chmod 644 dev.db 2>/dev/null || true
+   chmod 755 .
+   ```
+3. **Restart the dev server:** `npm run dev`.
+
+If it still fails, ensure no other app has `dev.db` open (e.g. DB browser), and that the project is not on a read-only or synced volume. As a last resort, remove `dev.db`, run `npx prisma migrate deploy` and `npx prisma db seed` again, then restart.
+
 **Testing:** For the purpose of testing, all signed-in users have the Admin role so you can see and use full functionality (user management, add/edit/delete books, borrow/return, etc.).
 
 ---
