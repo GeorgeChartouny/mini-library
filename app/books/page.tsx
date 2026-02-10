@@ -13,16 +13,24 @@ export default async function BooksPage({
   const { query = "", status = "ALL", sort = "title" } = await searchParams;
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">Books</h1>
-        {canMutate && (
+        <div className="flex items-center gap-2">
           <Link
-            href="/books/new"
-            className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            href="/books/suggest"
+            className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-100 dark:border-zinc-600 dark:hover:bg-zinc-800"
           >
-            Add Book
+            Find a book (AI)
           </Link>
-        )}
+          {canMutate && (
+            <Link
+              href="/books/new"
+              className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            >
+              Add Book
+            </Link>
+          )}
+        </div>
       </div>
       <Suspense fallback={<div className="text-zinc-500">Loading…</div>}>
         <BooksPageContent query={query} status={status} sort={sort} canMutate={canMutate} />

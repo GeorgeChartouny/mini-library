@@ -55,6 +55,32 @@ export async function getBooksList(params: ListBooksParams = {}) {
   return filtered.map(toBookResponse);
 }
 
+export type BookForSuggestion = {
+  id: string;
+  title: string;
+  author: string;
+  category: string | null;
+  description: string | null;
+};
+
+export async function getAvailableBooksForSuggestions(): Promise<
+  BookForSuggestion[]
+> {
+  const books = await prisma.book.findMany({
+    include: { loans: true },
+  });
+  const available = books.filter(
+    (b: BookWithLoans) => getDerivedStatus(b.loans) === "AVAILABLE"
+  );
+  return available.map((b) => ({
+    id: b.id,
+    title: b.title,
+    author: b.author,
+    category: b.category,
+    description: b.description,
+  }));
+}
+
 export type ActiveLoanInfo = {
   borrowerName: string;
   borrowerEmail: string | null;

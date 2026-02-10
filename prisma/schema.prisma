@@ -92,3 +92,12 @@ model VerificationToken {
 
   @@id([identifier, token])
 }
+
+model BookSuggestion {
+  id        String   @id @default(cuid())
+  title     String
+  author    String
+  category  String?
+  notes     String?
+  createdAt DateTime @default(now())
+}
