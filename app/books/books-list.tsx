@@ -165,7 +165,7 @@ export function BooksList({
           <option value="BORROWED">Borrowed</option>
         </select>
         <input type="hidden" name="sort" value={sort} />
-        <button type="submit" className="btn-primary">
+        <button type="submit" className="btn-search">
           Search
         </button>
       </form>
@@ -191,10 +191,10 @@ export function BooksList({
               p.set("sort", value);
               router.push(`/books?${p.toString()}`);
             }}
-            className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
+            className={`rounded-xl px-3.5 py-2 text-sm font-medium transition-all duration-200 ${
               sort === value
-                ? "bg-indigo-600 text-white dark:bg-indigo-500"
-                : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                ? "bg-indigo-600 text-white shadow-md dark:bg-indigo-500 dark:shadow-indigo-500/25"
+                : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-700/80 dark:text-zinc-200 dark:hover:bg-zinc-600 dark:border dark:border-zinc-600"
             }`}
           >
             {label}
@@ -282,7 +282,7 @@ export function BooksList({
                       <div className="flex flex-wrap gap-2">
                         <Link
                           href={`/books/${book.id}`}
-                          className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+                          className="action-link"
                         >
                           View
                         </Link>
@@ -290,7 +290,7 @@ export function BooksList({
                           <>
                             <Link
                               href={`/books/${book.id}/edit`}
-                              className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+                              className="action-link"
                             >
                               Edit
                             </Link>
@@ -298,7 +298,7 @@ export function BooksList({
                               type="button"
                               onClick={() => handleDelete(book.id)}
                               disabled={loadingAction !== null}
-                              className="font-medium text-red-600 hover:text-red-500 disabled:opacity-50 dark:text-red-400"
+                              className="action-link action-link-danger disabled:opacity-50"
                             >
                               Delete
                             </button>
@@ -309,18 +309,18 @@ export function BooksList({
                                   setCheckoutBook({ id: book.id, title: book.title })
                                 }
                                 disabled={loadingAction !== null}
-                                className="font-medium text-indigo-600 hover:text-indigo-500 disabled:opacity-50 dark:text-indigo-400"
+                                className="action-btn disabled:opacity-50"
                               >
-                                Borrow (Check-out)
+                                Borrow
                               </button>
                             ) : (
                               <button
                                 type="button"
                                 onClick={() => handleCheckin(book.id)}
                                 disabled={loadingAction !== null}
-                                className="font-medium text-indigo-600 hover:text-indigo-500 disabled:opacity-50 dark:text-indigo-400"
+                                className="action-btn action-btn-return disabled:opacity-50"
                               >
-                                Return (Check-in)
+                                Return
                               </button>
                             )}
                           </>

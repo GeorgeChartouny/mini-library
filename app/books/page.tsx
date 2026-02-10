@@ -23,7 +23,7 @@ export default async function BooksPage({
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/books/suggest" className="btn-secondary">
+          <Link href="/books/suggest" className="btn-ai">
             Find a book (AI)
           </Link>
           {canMutate && (
