@@ -6,9 +6,9 @@ A small library management app: books, **Borrow** (checkout) / **Return** (check
 
 ## Live app
 
-**URL:** [https://mini-library.vercel.app](https://mini-library.vercel.app)
+**URL:** [https://mini-library-george-chartouny.vercel.app](https://mini-library-george-chartouny.vercel.app)
 
-*(Replace with your deployed URL after you deploy—e.g. from Vercel dashboard or `vercel` CLI.)*
+*For the purpose of testing, all signed-in users have the Admin role so they can see full functionalities.*
 
 ---
 
@@ -77,32 +77,6 @@ Open [http://localhost:3000](http://localhost:3000).
 - **User management (Admin):** List users, change role, remove user (except self).
 - **Find a book (AI):** Enter preferences; get suggestions from **available** books. If none match, see an AI-suggested book and add it (or your own) to the suggestion list.
 - **Book suggestions:** When nothing on the shelf fits, suggest a book for the library; list of “suggested books to be added.”
-
----
-
-## Deploy (e.g. Vercel)
-
-### Option A: Vercel Dashboard
-
-1. **Push** your repo to GitHub (if not already).
-2. In [Vercel](https://vercel.com), **Import** the repo.
-3. Set the **project name** to include `george-chartouny` (e.g. `george-chartouny-mini-library`) so the URL is `https://george-chartouny-mini-library.vercel.app` (or `https://george-chartouny-mini-library-<your-username>.vercel.app`).
-4. In **Settings → Environment Variables**, add all variables from `.env.example`. For production:
-   - `DATABASE_URL` = your **PostgreSQL** connection string (e.g. from [Neon](https://neon.tech), [Supabase](https://supabase.com), or [Railway](https://railway.app)).
-   - `NEXTAUTH_URL` = your Vercel URL (e.g. `https://george-chartouny-mini-library.vercel.app`).
-5. Deploy. Run `npx prisma migrate deploy` against the production DB (e.g. in a deploy script or one-off) so tables exist. The project uses `vercel.json` with build command `prisma generate && next build` (no DB seed during build).
-
-### Option B: Vercel CLI
-
-From the project root (logged in with `npx vercel login` if needed):
-
-```bash
-npx vercel deploy --prod
-```
-
-When prompted for **project name**, enter `george-chartouny-mini-library` to get that name in the URL. Set environment variables in the [Vercel dashboard](https://vercel.com/dashboard) (Settings → Environment Variables) and redeploy.
-
-After deploy, set your **live URL** in this README (e.g. replace `https://mini-library.vercel.app` with your real Vercel URL).
 
 ---
 
