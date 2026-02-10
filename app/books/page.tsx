@@ -9,8 +9,9 @@ export default async function BooksPage({
 }: {
   searchParams: Promise<{ query?: string; status?: string; sort?: string }>;
 }) {
-  const { canMutate } = await requireAuth();
+  const { canMutate, session } = await requireAuth();
   const { query = "", status = "ALL", sort = "title" } = await searchParams;
+  const currentUserEmail = session?.user?.email ?? null;
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -40,7 +41,7 @@ export default async function BooksPage({
           </div>
         }
       >
-        <BooksPageContent query={query} status={status} sort={sort} canMutate={canMutate} />
+        <BooksPageContent query={query} status={status} sort={sort} canMutate={canMutate} currentUserEmail={currentUserEmail} />
       </Suspense>
     </div>
   );
@@ -51,11 +52,13 @@ async function BooksPageContent({
   status,
   sort,
   canMutate,
+  currentUserEmail,
 }: {
   query: string;
   status: string;
   sort: string;
   canMutate: boolean;
+  currentUserEmail: string | null;
 }) {
   const books = await getBooksList({ query, status, sort });
   return (
@@ -65,6 +68,7 @@ async function BooksPageContent({
       status={status}
       sort={sort}
       canMutate={canMutate}
+      currentUserEmail={currentUserEmail}
     />
   );
 }

@@ -13,12 +13,6 @@ export async function POST(
     if (!session) {
       return NextResponse.json({ error: "Sign in required" }, { status: 401 });
     }
-    if (!canMutate) {
-      return NextResponse.json(
-        { error: "Only librarians and admins can check in books" },
-        { status: 403 }
-      );
-    }
     const { id } = await params;
     const book = await prisma.book.findUnique({
       where: { id },
@@ -32,6 +26,17 @@ export async function POST(
       return NextResponse.json(
         { error: "No active loan for this book" },
         { status: 409 }
+      );
+    }
+    const isBorrower =
+      session.user?.email &&
+      active.borrowerEmail &&
+      session.user.email.toLowerCase().trim() ===
+        active.borrowerEmail.toLowerCase().trim();
+    if (!canMutate && !isBorrower) {
+      return NextResponse.json(
+        { error: "Only librarians, admins, or the borrower can return this book" },
+        { status: 403 }
       );
     }
     await prisma.loan.update({

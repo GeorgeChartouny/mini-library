@@ -6,9 +6,24 @@ import { BorrowModal } from "../borrow-modal";
 
 type ActiveLoan = {
   borrowerName: string;
+  borrowerEmail?: string | null;
   borrowedAt: string;
   dueAt: string | null;
 } | null;
+
+function canReturn(
+  canMutate: boolean,
+  activeLoan: ActiveLoan,
+  currentUserEmail: string | null
+): boolean {
+  if (!activeLoan) return false;
+  if (canMutate) return true;
+  if (!currentUserEmail || !activeLoan.borrowerEmail) return false;
+  return (
+    activeLoan.borrowerEmail.toLowerCase().trim() ===
+    currentUserEmail.toLowerCase().trim()
+  );
+}
 
 export function BookActions({
   bookId,
@@ -16,12 +31,14 @@ export function BookActions({
   status,
   activeLoan,
   canMutate = false,
+  currentUserEmail = null,
 }: {
   bookId: string;
   bookTitle?: string;
   status: string;
   activeLoan: ActiveLoan;
   canMutate?: boolean;
+  currentUserEmail?: string | null;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -95,7 +112,7 @@ export function BookActions({
       </>
     );
   }
-  if (!canMutate) return null;
+  if (!canReturn(canMutate, activeLoan, currentUserEmail)) return null;
   return (
     <button
       type="button"

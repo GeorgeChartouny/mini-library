@@ -10,10 +10,11 @@ export default async function BookDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const [{ id }, { canMutate }] = await Promise.all([
+  const [{ id }, { canMutate, session }] = await Promise.all([
     params,
     requireAuth(),
   ]);
+  const currentUserEmail = session?.user?.email ?? null;
   const book = await prisma.book.findUnique({
     where: { id },
     include: { loans: true },
@@ -52,6 +53,7 @@ export default async function BookDetailPage({
             status={data.status}
             activeLoan={data.activeLoan}
             canMutate={canMutate}
+            currentUserEmail={currentUserEmail}
           />
         </div>
       </div>

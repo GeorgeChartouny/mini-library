@@ -21,18 +21,34 @@ type BookItem = {
   overdue: boolean;
 };
 
+function canReturnBook(
+  canMutate: boolean,
+  book: BookItem,
+  currentUserEmail: string | null
+): boolean {
+  if (book.status !== "BORROWED") return false;
+  if (canMutate) return true;
+  if (!currentUserEmail || !book.activeLoan?.borrowerEmail) return false;
+  return (
+    book.activeLoan.borrowerEmail.toLowerCase().trim() ===
+    currentUserEmail.toLowerCase().trim()
+  );
+}
+
 export function BooksList({
   initialBooks,
   query,
   status,
   sort,
   canMutate = false,
+  currentUserEmail = null,
 }: {
   initialBooks: BookItem[];
   query: string;
   status: string;
   sort: string;
   canMutate?: boolean;
+  currentUserEmail?: string | null;
 }) {
   const router = useRouter();
   const [books, setBooks] = useState(initialBooks);
@@ -303,17 +319,19 @@ export function BooksList({
                               Delete
                             </button>
                             {book.status === "AVAILABLE" ? (
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  setCheckoutBook({ id: book.id, title: book.title })
-                                }
-                                disabled={loadingAction !== null}
-                                className="action-btn disabled:opacity-50"
-                              >
-                                Borrow
-                              </button>
-                            ) : (
+                              canMutate ? (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setCheckoutBook({ id: book.id, title: book.title })
+                                  }
+                                  disabled={loadingAction !== null}
+                                  className="action-btn disabled:opacity-50"
+                                >
+                                  Borrow
+                                </button>
+                              ) : null
+                            ) : canReturnBook(canMutate, book, currentUserEmail) ? (
                               <button
                                 type="button"
                                 onClick={() => handleCheckin(book.id)}
@@ -322,7 +340,7 @@ export function BooksList({
                               >
                                 Return
                               </button>
-                            )}
+                            ) : null}
                           </>
                         )}
                       </div>
