@@ -20,16 +20,13 @@ A small library management app: books, **Borrow** (checkout) / **Return** (check
 npm install
 ```
 
-### 2. Database
+### 2. Database (PostgreSQL)
+
+Create a PostgreSQL database (local or hosted, e.g. [Neon](https://neon.tech), [Supabase](https://supabase.com), [Railway](https://railway.app)), then:
 
 ```bash
 npx prisma generate
 npx prisma migrate deploy
-```
-
-For a fresh DB with sample books:
-
-```bash
 npx prisma db seed
 ```
 
@@ -39,7 +36,7 @@ Copy `.env.example` to `.env` and set:
 
 | Variable | Description |
 |----------|-------------|
-| `DATABASE_URL` | SQLite path, e.g. `file:./dev.db` |
+| `DATABASE_URL` | PostgreSQL connection string (see .env.example) |
 | `NEXTAUTH_URL` | App URL (e.g. `http://localhost:3000` locally) |
 | `NEXTAUTH_SECRET` | Random string (e.g. `openssl rand -base64 32`) |
 | `GOOGLE_CLIENT_ID` | Google OAuth client ID |
@@ -55,21 +52,10 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-### Troubleshooting: “Sign-in error: Callback” / “attempt to write a readonly database”
+### Troubleshooting
 
-If Google sign-in fails with **Callback** and the terminal shows `attempt to write a readonly database` or `SQLITE_READONLY_DBMOVED`, the SQLite file (e.g. `dev.db`) or its folder is not writable. Fix it:
-
-1. **Stop the dev server** (Ctrl+C).
-2. **Make the database and project folder writable** (from the project root):
-   ```bash
-   chmod 644 dev.db 2>/dev/null || true
-   chmod 755 .
-   ```
-3. **Restart the dev server:** `npm run dev`.
-
-If it still fails, ensure no other app has `dev.db` open (e.g. DB browser), and that the project is not on a read-only or synced volume. As a last resort, remove `dev.db`, run `npx prisma migrate deploy` and `npx prisma db seed` again, then restart.
-
-**Testing:** For the purpose of testing, all signed-in users have the Admin role so you can see and use full functionality (user management, add/edit/delete books, borrow/return, etc.).
+- **“Sign-in error: Callback”** — Ensure `DATABASE_URL` is correct and the database is reachable. Run `npx prisma migrate deploy` to apply migrations.
+- **Admin role:** Add your Google email to `NEXTAUTH_ADMIN_EMAILS` so that account gets Admin role on sign-in.
 
 ---
 
@@ -101,10 +87,10 @@ If it still fails, ensure no other app has `dev.db` open (e.g. DB browser), and 
 1. **Push** your repo to GitHub (if not already).
 2. In [Vercel](https://vercel.com), **Import** the repo.
 3. Set the **project name** to include `george-chartouny` (e.g. `george-chartouny-mini-library`) so the URL is `https://george-chartouny-mini-library.vercel.app` (or `https://george-chartouny-mini-library-<your-username>.vercel.app`).
-4. In **Settings → Environment Variables**, add all variables from `.env.example` (see table above). For production:
+4. In **Settings → Environment Variables**, add all variables from `.env.example`. For production:
+   - `DATABASE_URL` = your **PostgreSQL** connection string (e.g. from [Neon](https://neon.tech), [Supabase](https://supabase.com), or [Railway](https://railway.app)).
    - `NEXTAUTH_URL` = your Vercel URL (e.g. `https://george-chartouny-mini-library.vercel.app`).
-   - For **database:** Vercel serverless does not persist a local SQLite file. Use a hosted database (e.g. [Turso](https://turso.tech) for SQLite, or Postgres/Neon) and set `DATABASE_URL` accordingly; you may need to switch the Prisma datasource or adapter for that provider.
-5. Deploy. The project uses `vercel.json` with build command `prisma generate && next build` (no DB seed during build).
+5. Deploy. Run `npx prisma migrate deploy` against the production DB (e.g. in a deploy script or one-off) so tables exist. The project uses `vercel.json` with build command `prisma generate && next build` (no DB seed during build).
 
 ### Option B: Vercel CLI
 
