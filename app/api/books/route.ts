@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { createBookSchema } from "@/lib/validators";
 import { toBookResponse, getBooksList } from "@/lib/books";
+import { requireAuth } from "@/lib/auth-server";
 
 const statusValues = ["ALL", "AVAILABLE", "BORROWED"] as const;
 const sortValues = ["title", "author", "newest", "oldest"] as const;
@@ -39,6 +40,16 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const { session, canMutate } = await requireAuth();
+    if (!session) {
+      return NextResponse.json({ error: "Sign in required" }, { status: 401 });
+    }
+    if (!canMutate) {
+      return NextResponse.json(
+        { error: "Only librarians and admins can add books" },
+        { status: 403 }
+      );
+    }
     const body = await request.json();
     const parsed = createBookSchema.safeParse(body);
     if (!parsed.success) {

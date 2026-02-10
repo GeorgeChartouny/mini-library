@@ -15,11 +15,13 @@ export function BookActions({
   bookTitle,
   status,
   activeLoan,
+  canMutate = false,
 }: {
   bookId: string;
   bookTitle?: string;
   status: string;
   activeLoan: ActiveLoan;
+  canMutate?: boolean;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -72,6 +74,7 @@ export function BookActions({
   }
 
   if (status === "AVAILABLE") {
+    if (!canMutate) return null;
     return (
       <>
         <BorrowModal
@@ -92,6 +95,7 @@ export function BookActions({
       </>
     );
   }
+  if (!canMutate) return null;
   return (
     <button
       type="button"

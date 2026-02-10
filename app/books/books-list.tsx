@@ -26,11 +26,13 @@ export function BooksList({
   query,
   status,
   sort,
+  canMutate = false,
 }: {
   initialBooks: BookItem[];
   query: string;
   status: string;
   sort: string;
+  canMutate?: boolean;
 }) {
   const router = useRouter();
   const [books, setBooks] = useState(initialBooks);
@@ -266,40 +268,44 @@ export function BooksList({
                       >
                         View
                       </Link>
-                      <Link
-                        href={`/books/${book.id}/edit`}
-                        className="text-blue-600 hover:underline dark:text-blue-400"
-                      >
-                        Edit
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(book.id)}
-                        disabled={loadingAction !== null}
-                        className="text-red-600 hover:underline disabled:opacity-50 dark:text-red-400"
-                      >
-                        Delete
-                      </button>
-                      {book.status === "AVAILABLE" ? (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setCheckoutBook({ id: book.id, title: book.title })
-                          }
-                          disabled={loadingAction !== null}
-                          className="text-zinc-700 hover:underline disabled:opacity-50 dark:text-zinc-300"
-                        >
-                          Borrow (Check-out)
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => handleCheckin(book.id)}
-                          disabled={loadingAction !== null}
-                          className="text-zinc-700 hover:underline disabled:opacity-50 dark:text-zinc-300"
-                        >
-                          Return (Check-in)
-                        </button>
+                      {canMutate && (
+                        <>
+                          <Link
+                            href={`/books/${book.id}/edit`}
+                            className="text-blue-600 hover:underline dark:text-blue-400"
+                          >
+                            Edit
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(book.id)}
+                            disabled={loadingAction !== null}
+                            className="text-red-600 hover:underline disabled:opacity-50 dark:text-red-400"
+                          >
+                            Delete
+                          </button>
+                          {book.status === "AVAILABLE" ? (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setCheckoutBook({ id: book.id, title: book.title })
+                              }
+                              disabled={loadingAction !== null}
+                              className="text-zinc-700 hover:underline disabled:opacity-50 dark:text-zinc-300"
+                            >
+                              Borrow (Check-out)
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => handleCheckin(book.id)}
+                              disabled={loadingAction !== null}
+                              className="text-zinc-700 hover:underline disabled:opacity-50 dark:text-zinc-300"
+                            >
+                              Return (Check-in)
+                            </button>
+                          )}
+                        </>
                       )}
                     </div>
                   </td>

@@ -2,12 +2,23 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getActiveLoan } from "@/lib/status";
 import { toBookResponse } from "@/lib/books";
+import { requireAuth } from "@/lib/auth-server";
 
 export async function POST(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { session, canMutate } = await requireAuth();
+    if (!session) {
+      return NextResponse.json({ error: "Sign in required" }, { status: 401 });
+    }
+    if (!canMutate) {
+      return NextResponse.json(
+        { error: "Only librarians and admins can check in books" },
+        { status: 403 }
+      );
+    }
     const { id } = await params;
     const book = await prisma.book.findUnique({
       where: { id },

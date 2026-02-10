@@ -28,6 +28,11 @@ export const checkoutSchema = z.object({
     .transform((v) => (v instanceof Date ? v : v ? new Date(v) : undefined)),
 });
 
+export const updateUserRoleSchema = z.object({
+  role: z.enum(["ADMIN", "MEMBER"], { message: "Role must be Admin or Normal" }),
+});
+
 export type CreateBookInput = z.infer<typeof createBookSchema>;
 export type UpdateBookInput = z.infer<typeof updateBookSchema>;
 export type CheckoutInput = z.infer<typeof checkoutSchema>;
+export type UpdateUserRoleInput = z.infer<typeof updateUserRoleSchema>;

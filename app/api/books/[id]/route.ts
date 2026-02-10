@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { updateBookSchema } from "@/lib/validators";
 import { toBookResponse, toBookDetailResponse } from "@/lib/books";
+import { requireAuth } from "@/lib/auth-server";
 
 export async function GET(
   _request: NextRequest,
@@ -31,6 +32,16 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { session, canMutate } = await requireAuth();
+    if (!session) {
+      return NextResponse.json({ error: "Sign in required" }, { status: 401 });
+    }
+    if (!canMutate) {
+      return NextResponse.json(
+        { error: "Only librarians and admins can edit books" },
+        { status: 403 }
+      );
+    }
     const { id } = await params;
     const book = await prisma.book.findUnique({ where: { id } });
     if (!book) {
@@ -80,6 +91,16 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { session, canMutate } = await requireAuth();
+    if (!session) {
+      return NextResponse.json({ error: "Sign in required" }, { status: 401 });
+    }
+    if (!canMutate) {
+      return NextResponse.json(
+        { error: "Only librarians and admins can delete books" },
+        { status: 403 }
+      );
+    }
     const { id } = await params;
     await prisma.book.delete({ where: { id } });
     return new NextResponse(null, { status: 204 });

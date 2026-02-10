@@ -121,6 +121,42 @@ export type OverdueLoanItem = {
   dueAt: string;
 };
 
+export async function getLoansByBorrowerEmail(
+  email: string
+): Promise<
+  Array<{
+    id: string;
+    bookId: string;
+    bookTitle: string;
+    borrowerName: string;
+    borrowedAt: string;
+    dueAt: string | null;
+    returnedAt: string | null;
+    overdue: boolean;
+  }>
+> {
+  const loans = await prisma.loan.findMany({
+    where: { borrowerEmail: email },
+    include: { book: true },
+    orderBy: { borrowedAt: "desc" },
+  });
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  return loans.map((l) => ({
+    id: l.id,
+    bookId: l.bookId,
+    bookTitle: l.book.title,
+    borrowerName: l.borrowerName,
+    borrowedAt: l.borrowedAt.toISOString(),
+    dueAt: l.dueAt?.toISOString() ?? null,
+    returnedAt: l.returnedAt?.toISOString() ?? null,
+    overdue:
+      l.returnedAt === null &&
+      l.dueAt !== null &&
+      l.dueAt < today,
+  }));
+}
+
 export async function getOverdueLoans(): Promise<OverdueLoanItem[]> {
   const loans = await prisma.loan.findMany({
     where: {

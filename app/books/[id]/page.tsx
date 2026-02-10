@@ -3,13 +3,17 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { toBookDetailResponse } from "@/lib/books";
 import { BookActions } from "./book-actions";
+import { requireAuth } from "@/lib/auth-server";
 
 export default async function BookDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
+  const [{ id }, { canMutate }] = await Promise.all([
+    params,
+    requireAuth(),
+  ]);
   const book = await prisma.book.findUnique({
     where: { id },
     include: { loans: true },
@@ -35,17 +39,20 @@ export default async function BookDetailPage({
           </p>
         </div>
         <div className="flex gap-2">
-          <Link
-            href={`/books/${id}/edit`}
-            className="rounded border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
-          >
-            Edit
-          </Link>
+          {canMutate && (
+            <Link
+              href={`/books/${id}/edit`}
+              className="rounded border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+            >
+              Edit
+            </Link>
+          )}
           <BookActions
             bookId={id}
             bookTitle={data.title}
             status={data.status}
             activeLoan={data.activeLoan}
+            canMutate={canMutate}
           />
         </div>
       </div>

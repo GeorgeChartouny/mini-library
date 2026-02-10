@@ -1,7 +1,12 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { getOverdueLoans } from "@/lib/books";
 
 export default async function OverduePage() {
+  const session = await getServerSession(authOptions);
+  if (!session) redirect("/books");
   let overdue: Awaited<ReturnType<typeof getOverdueLoans>> = [];
   try {
     overdue = await getOverdueLoans();

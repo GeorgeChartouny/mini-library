@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getActiveLoan, getDerivedStatus, isOverdue } from "@/lib/status";
+import { requireAuth } from "@/lib/auth-server";
 
 async function getStats() {
   const books = await prisma.book.findMany({ include: { loans: true } });
@@ -20,7 +24,9 @@ async function getStats() {
 }
 
 export default async function DashboardPage() {
-  const stats = await getStats();
+  const session = await getServerSession(authOptions);
+  if (!session) redirect("/books");
+  const [stats, { canMutate }] = await Promise.all([getStats(), requireAuth()]);
   return (
     <div className="space-y-8">
       <h1 className="text-2xl font-bold">Dashboard</h1>
@@ -52,12 +58,14 @@ export default async function DashboardPage() {
         </Link>
       </div>
       <div className="flex flex-wrap gap-4">
-        <Link
-          href="/books/new"
-          className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-        >
-          Add Book
-        </Link>
+        {canMutate && (
+          <Link
+            href="/books/new"
+            className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          >
+            Add Book
+          </Link>
+        )}
         <Link
           href="/books"
           className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
