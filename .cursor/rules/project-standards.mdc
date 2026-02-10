@@ -1,0 +1,28 @@
+---
+description: Core behavior, code quality, and project structure for mini-library
+alwaysApply: true
+---
+
+# General Behavior
+
+- Follow the PLAN exactly; implement in phases and do not skip foundational steps.
+- Prefer simple, reliable solutions over over-engineering.
+- If unsure, choose the simplest option that still meets requirements.
+- Do not introduce new dependencies unless clearly justified.
+
+# Code Quality & Style
+
+- **TypeScript everywhere.** No `any` unless absolutely necessary.
+- **Naming:** Files kebab-case for folders, `route.ts` for handlers; functions camelCase; types/interfaces PascalCase.
+- **DRY:** Shared helpers go into `lib/` (e.g. deriveStatus, getActiveLoan, isOverdue).
+- Comments only when non-obvious; avoid noisy comments.
+- Keep components small; split UI into reusable components when a file becomes large.
+
+# Project Structure (Mandatory)
+
+- `lib/prisma.ts` — Prisma client (Prisma v7 + better-sqlite3 adapter)
+- `lib/validators.ts` — all Zod schemas
+- `lib/bookView.ts` (or similar) — mapping DB → API view (derived status, active loan, overdue)
+- `app/api/books/...` — route handlers
+- `app/books/...` — UI pages
+- Optional: `components/` for shared UI (Table, Badge, Modal, FormField, etc.)

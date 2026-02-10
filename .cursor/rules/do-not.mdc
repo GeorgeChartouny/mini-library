@@ -1,0 +1,11 @@
+---
+description: Things to avoid in the mini-library project
+alwaysApply: true
+---
+
+# Do Not Do
+
+- Do not add complex state management libraries (Redux, etc.).
+- Do not overcomplicate styling.
+- Do not implement embeddings/semantic search unless specifically requested.
+- Do not store secrets in the repo.

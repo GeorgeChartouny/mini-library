@@ -1,0 +1,17 @@
+---
+description: API validation, responses, and checkout/checkin rules
+globs: app/api/**/*.ts
+alwaysApply: false
+---
+
+# API Rules
+
+- **Validation:** Validate all incoming bodies with Zod (create book, update book, checkout, checkin).
+- **Response shape:** Always return consistent JSON:
+  - Success: `{ data: ... }`
+  - Failure: `{ error: { message, details? } }`
+- **Status codes:** 200 OK / 201 Created; 400 Bad Request (validation); 404 Not Found; 409 Conflict (e.g. checkout when already borrowed); 500 Internal Server Error.
+- No silent failures; always return a clear error message.
+- Derived status must come from Loan table (active loan where returnedAt is null).
+- **Checkout:** Must fail if an active loan exists.
+- **Checkin:** Must fail if no active loan exists.

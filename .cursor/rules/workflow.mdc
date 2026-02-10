@@ -1,0 +1,24 @@
+---
+description: Testing, commits, and README requirements
+alwaysApply: true
+---
+
+# Testing & Reliability
+
+- After implementing each API route, do a basic manual test (curl or minimal UI call).
+- Ensure no runtime errors on `npm run dev` and a clean build when possible.
+
+# Commits (Workflow)
+
+- Make logical checkpoints; ensure the project builds before each checkpoint:
+  - Setup + Prisma schema + migration
+  - API endpoints complete
+  - UI pages complete
+  - Bonus features (auth, AI, deploy)
+- Keep commit messages short and descriptive.
+
+# README (Mandatory)
+
+- Must include: `npm install`, `prisma migrate`, `npm run dev`.
+- Must mention Borrow/Return terminology.
+- Include demo URL and demo credentials if auth is implemented and deployed.

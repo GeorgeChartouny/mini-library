@@ -1,0 +1,12 @@
+---
+description: Security and auth rules when auth is implemented
+globs: app/api/**/*.ts,app/**/*.tsx,lib/**/*.ts
+alwaysApply: false
+---
+
+# Security/Auth (If Implemented)
+
+- **Roles:** ADMIN, LIBRARIAN, MEMBER.
+- **ADMIN/LIBRARIAN only:** create, edit, delete; borrow/return.
+- **MEMBER:** read/search; optionally view “My Loans”.
+- Protect both UI and API; API protection is mandatory if auth exists.

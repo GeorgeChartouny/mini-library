@@ -1,0 +1,12 @@
+---
+description: Prisma v7 and database configuration rules
+globs: prisma/**/*,lib/prisma.ts,prisma.config.ts
+alwaysApply: false
+---
+
+# Prisma Rules (Mandatory)
+
+1. **Prisma v7:** Do NOT use `url = env("DATABASE_URL")` inside `schema.prisma`.
+2. Put DATABASE_URL handling in `prisma.config.ts` and `.env`.
+3. Use Better-SQLite3 adapter in PrismaClient.
+4. Ensure migrations run without errors.

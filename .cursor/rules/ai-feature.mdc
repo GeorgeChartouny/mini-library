@@ -1,0 +1,10 @@
+---
+description: AI feature scope and behavior when implemented
+globs: app/api/ai/**/*.ts,app/**/*.tsx
+alwaysApply: false
+---
+
+# AI Feature (If Implemented)
+
+- Keep AI feature relevant and small: e.g. “Generate description” button that fills description field.
+- The AI route must: validate inputs; return short text (2–4 lines); fail gracefully if no API key is set.

@@ -1,0 +1,13 @@
+---
+description: UI/UX terminology, states, and form behavior
+globs: app/**/*.tsx
+alwaysApply: false
+---
+
+# UI/UX Rules
+
+- **Terminology:** Use “Borrow (Check-out)” and “Return (Check-in)” everywhere.
+- **Pages:** Must have loading states, empty states (“No books found”), and visible error states for API failures.
+- **List page:** Search box, status filter, actions per row, confirmation modal on delete.
+- **Badges:** Show AVAILABLE, BORROWED, OVERDUE.
+- **Forms:** Display validation errors clearly and prevent invalid submissions.
