@@ -88,7 +88,7 @@ export function BookActions({
           type="button"
           onClick={() => setShowBorrowModal(true)}
           disabled={loading}
-          className="rounded bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="btn-primary disabled:opacity-50"
         >
           {loading ? "…" : "Borrow (Check-out)"}
         </button>
@@ -101,7 +101,7 @@ export function BookActions({
       type="button"
       onClick={handleCheckin}
       disabled={loading}
-      className="rounded bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 disabled:opacity-50 dark:bg-amber-500 dark:hover:bg-amber-600"
+      className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-amber-500 disabled:opacity-50 dark:bg-amber-500 dark:hover:bg-amber-400"
     >
       {loading ? "…" : "Return (Check-in)"}
     </button>

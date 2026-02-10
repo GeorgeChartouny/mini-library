@@ -130,7 +130,7 @@ export function BooksList({
         loading={loadingAction?.startsWith("checkout-") ?? false}
       />
       <form
-        className="flex flex-wrap items-center gap-3"
+        className="card flex flex-wrap items-center gap-3 p-4"
         onSubmit={(e) => {
           e.preventDefault();
           const form = e.currentTarget;
@@ -153,27 +153,24 @@ export function BooksList({
           name="query"
           defaultValue={query}
           placeholder="Search title, author, ISBN, category…"
-          className="rounded border border-zinc-300 px-3 py-1.5 dark:border-zinc-700 dark:bg-zinc-900"
+          className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm transition placeholder:text-zinc-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-zinc-600 dark:bg-zinc-800 dark:placeholder:text-zinc-500"
         />
         <select
           name="status"
           defaultValue={status}
-          className="rounded border border-zinc-300 px-3 py-1.5 dark:border-zinc-700 dark:bg-zinc-900"
+          className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-zinc-600 dark:bg-zinc-800"
         >
           <option value="ALL">All</option>
           <option value="AVAILABLE">Available</option>
           <option value="BORROWED">Borrowed</option>
         </select>
         <input type="hidden" name="sort" value={sort} />
-        <button
-          type="submit"
-          className="rounded bg-zinc-800 px-3 py-1.5 text-white dark:bg-zinc-200 dark:text-zinc-900"
-        >
+        <button type="submit" className="btn-primary">
           Search
         </button>
       </form>
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm text-zinc-500 dark:text-zinc-400">
+        <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
           Sort by:
         </span>
         {(
@@ -194,9 +191,9 @@ export function BooksList({
               p.set("sort", value);
               router.push(`/books?${p.toString()}`);
             }}
-            className={`rounded px-3 py-1.5 text-sm font-medium ${
+            className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
               sort === value
-                ? "bg-zinc-800 text-white dark:bg-zinc-200 dark:text-zinc-900"
+                ? "bg-indigo-600 text-white dark:bg-indigo-500"
                 : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
             }`}
           >
@@ -206,113 +203,135 @@ export function BooksList({
       </div>
 
       {books.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-zinc-300 py-12 text-center text-zinc-500 dark:border-zinc-700">
-          No books found.
-        </p>
+        <div className="card py-16 text-center">
+          <p className="text-zinc-500 dark:text-zinc-400">
+            No books found. Try a different search or filter.
+          </p>
+        </div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="border-b border-zinc-200 dark:border-zinc-700">
-                <th className="p-3 font-medium">Title</th>
-                <th className="p-3 font-medium">Author</th>
-                <th className="p-3 font-medium">Category</th>
-                <th className="p-3 font-medium">Status</th>
-                <th className="p-3 font-medium">Borrower</th>
-                <th className="p-3 font-medium">Due</th>
-                <th className="p-3 font-medium">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {books.map((book) => (
-                <tr
-                  key={book.id}
-                  className="border-b border-zinc-100 dark:border-zinc-800"
-                >
-                  <td className="p-3">
-                    <Link
-                      href={`/books/${book.id}`}
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-400"
-                    >
-                      {book.title}
-                    </Link>
-                  </td>
-                  <td className="p-3">{book.author}</td>
-                  <td className="p-3">{book.category ?? "—"}</td>
-                  <td className="p-3">
-                    <span
-                      className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${
-                        book.overdue
-                          ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                          : book.status === "BORROWED"
-                            ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
-                            : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                      }`}
-                    >
-                      {book.overdue ? "OVERDUE" : book.status}
-                    </span>
-                  </td>
-                  <td className="p-3">
-                    {book.activeLoan?.borrowerName ?? "—"}
-                  </td>
-                  <td className="p-3">
-                    {book.activeLoan?.dueAt
-                      ? new Date(book.activeLoan.dueAt).toLocaleDateString()
-                      : "—"}
-                  </td>
-                  <td className="p-3">
-                    <div className="flex flex-wrap gap-2">
+        <div className="card overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/50">
+                  <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                    Title
+                  </th>
+                  <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                    Author
+                  </th>
+                  <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                    Category
+                  </th>
+                  <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                    Status
+                  </th>
+                  <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                    Borrower
+                  </th>
+                  <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                    Due
+                  </th>
+                  <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {books.map((book) => (
+                  <tr
+                    key={book.id}
+                    className="border-b border-zinc-100 transition hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800/30"
+                  >
+                    <td className="px-4 py-3">
                       <Link
                         href={`/books/${book.id}`}
-                        className="text-blue-600 hover:underline dark:text-blue-400"
+                        className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
                       >
-                        View
+                        {book.title}
                       </Link>
-                      {canMutate && (
-                        <>
-                          <Link
-                            href={`/books/${book.id}/edit`}
-                            className="text-blue-600 hover:underline dark:text-blue-400"
-                          >
-                            Edit
-                          </Link>
-                          <button
-                            type="button"
-                            onClick={() => handleDelete(book.id)}
-                            disabled={loadingAction !== null}
-                            className="text-red-600 hover:underline disabled:opacity-50 dark:text-red-400"
-                          >
-                            Delete
-                          </button>
-                          {book.status === "AVAILABLE" ? (
+                    </td>
+                    <td className="px-4 py-3 text-zinc-700 dark:text-zinc-300">
+                      {book.author}
+                    </td>
+                    <td className="px-4 py-3 text-zinc-500 dark:text-zinc-400">
+                      {book.category ?? "—"}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={
+                          book.overdue
+                            ? "badge-overdue"
+                            : book.status === "BORROWED"
+                              ? "badge-borrowed"
+                              : "badge-available"
+                        }
+                      >
+                        {book.overdue ? "OVERDUE" : book.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
+                      {book.activeLoan?.borrowerName ?? "—"}
+                    </td>
+                    <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
+                      {book.activeLoan?.dueAt
+                        ? new Date(book.activeLoan.dueAt).toLocaleDateString()
+                        : "—"}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex flex-wrap gap-2">
+                        <Link
+                          href={`/books/${book.id}`}
+                          className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+                        >
+                          View
+                        </Link>
+                        {canMutate && (
+                          <>
+                            <Link
+                              href={`/books/${book.id}/edit`}
+                              className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+                            >
+                              Edit
+                            </Link>
                             <button
                               type="button"
-                              onClick={() =>
-                                setCheckoutBook({ id: book.id, title: book.title })
-                              }
+                              onClick={() => handleDelete(book.id)}
                               disabled={loadingAction !== null}
-                              className="text-zinc-700 hover:underline disabled:opacity-50 dark:text-zinc-300"
+                              className="font-medium text-red-600 hover:text-red-500 disabled:opacity-50 dark:text-red-400"
                             >
-                              Borrow (Check-out)
+                              Delete
                             </button>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() => handleCheckin(book.id)}
-                              disabled={loadingAction !== null}
-                              className="text-zinc-700 hover:underline disabled:opacity-50 dark:text-zinc-300"
-                            >
-                              Return (Check-in)
-                            </button>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                            {book.status === "AVAILABLE" ? (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setCheckoutBook({ id: book.id, title: book.title })
+                                }
+                                disabled={loadingAction !== null}
+                                className="font-medium text-indigo-600 hover:text-indigo-500 disabled:opacity-50 dark:text-indigo-400"
+                              >
+                                Borrow (Check-out)
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => handleCheckin(book.id)}
+                                disabled={loadingAction !== null}
+                                className="font-medium text-indigo-600 hover:text-indigo-500 disabled:opacity-50 dark:text-indigo-400"
+                              >
+                                Return (Check-in)
+                              </button>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

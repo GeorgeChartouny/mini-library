@@ -44,14 +44,19 @@ export default function SignInClient({
   }
 
   return (
-    <div className="w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-6 shadow dark:border-zinc-800 dark:bg-zinc-900">
-      <h1 className="mb-4 text-xl font-semibold">Sign in</h1>
-      <p className="mb-4 text-sm text-zinc-500 dark:text-zinc-400">
+    <div className="card w-full max-w-md p-8 shadow-lg">
+      <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        Sign in
+      </h1>
+      <p className="mt-2 text-zinc-500 dark:text-zinc-400">
         Sign in with Google to access the library.
       </p>
       {error && (
-        <div className="mb-4 rounded bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-          <p className="mb-2">{error}</p>
+        <div
+          className="mt-5 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-300"
+          role="alert"
+        >
+          <p>{error}</p>
           {missingEnv.length > 0 && (
             <p className="mt-2 border-t border-red-200 pt-2 dark:border-red-800">
               <strong>Missing in .env:</strong> {missingEnv.join(", ")}
@@ -63,7 +68,7 @@ export default function SignInClient({
         type="button"
         onClick={handleSignIn}
         disabled={loading}
-        className="w-full rounded bg-zinc-900 py-2.5 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-70 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="btn-primary mt-6 w-full"
       >
         {loading ? "Redirecting…" : "Sign in with Google"}
       </button>

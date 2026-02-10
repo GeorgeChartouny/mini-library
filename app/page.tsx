@@ -28,48 +28,59 @@ export default async function DashboardPage() {
   if (!session) redirect("/books");
   const [stats, { canMutate }] = await Promise.all([getStats(), requireAuth()]);
   return (
-    <div className="space-y-8">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">Total books</p>
-          <p className="text-2xl font-semibold">{stats.total}</p>
+    <div className="space-y-10">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Dashboard
+        </h1>
+        <p className="mt-1 text-zinc-500 dark:text-zinc-400">
+          Overview of your library collection and loans.
+        </p>
+      </div>
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="card p-6 transition hover:shadow-md">
+          <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+            Total books
+          </p>
+          <p className="mt-2 text-3xl font-semibold tabular-nums text-zinc-900 dark:text-zinc-100">
+            {stats.total}
+          </p>
         </div>
-        <div className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">Available</p>
-          <p className="text-2xl font-semibold text-green-600 dark:text-green-400">
+        <div className="card p-6 transition hover:shadow-md">
+          <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+            Available
+          </p>
+          <p className="mt-2 text-3xl font-semibold tabular-nums text-emerald-600 dark:text-emerald-400">
             {stats.available}
           </p>
         </div>
-        <div className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">Borrowed</p>
-          <p className="text-2xl font-semibold text-amber-600 dark:text-amber-400">
+        <div className="card p-6 transition hover:shadow-md">
+          <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+            Borrowed
+          </p>
+          <p className="mt-2 text-3xl font-semibold tabular-nums text-amber-600 dark:text-amber-400">
             {stats.borrowed}
           </p>
         </div>
         <Link
           href="/overdue"
-          className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 hover:border-red-200 dark:hover:border-red-900/50"
+          className="card flex flex-col justify-center p-6 transition hover:shadow-md hover:border-red-200 dark:hover:border-red-900/50"
         >
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">Overdue</p>
-          <p className="text-2xl font-semibold text-red-600 dark:text-red-400">
+          <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+            Overdue
+          </p>
+          <p className="mt-2 text-3xl font-semibold tabular-nums text-red-600 dark:text-red-400">
             {stats.overdue}
           </p>
         </Link>
       </div>
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-3">
         {canMutate && (
-          <Link
-            href="/books/new"
-            className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-          >
+          <Link href="/books/new" className="btn-primary">
             Add Book
           </Link>
         )}
-        <Link
-          href="/books"
-          className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
-        >
+        <Link href="/books" className="btn-secondary">
           View Books
         </Link>
       </div>

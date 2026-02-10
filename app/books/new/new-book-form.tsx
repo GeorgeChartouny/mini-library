@@ -84,19 +84,21 @@ export function NewBookForm() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Link
-          href="/books"
-          className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-        >
-          ← Back to Books
-        </Link>
+    <div className="space-y-8">
+      <Link href="/books" className="btn-secondary inline-flex">
+        ← Back to Books
+      </Link>
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Add Book
+        </h1>
+        <p className="mt-1 text-zinc-500 dark:text-zinc-400">
+          Add a new book to the library collection.
+        </p>
       </div>
-      <h1 className="text-2xl font-bold">Add Book</h1>
       <form
         onSubmit={onSubmit}
-        className="max-w-xl space-y-4 rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900"
+        className="card max-w-xl space-y-4 p-6"
       >
         {error && (
           <p className="rounded bg-red-50 p-2 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-400">
@@ -104,49 +106,49 @@ export function NewBookForm() {
           </p>
         )}
         <div>
-          <label htmlFor="title" className="mb-1 block text-sm font-medium">
+          <label htmlFor="title" className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             Title *
           </label>
           <input
             id="title"
             name="title"
             required
-            className="w-full rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-800"
+            className="input-field"
           />
         </div>
         <div>
-          <label htmlFor="author" className="mb-1 block text-sm font-medium">
+          <label htmlFor="author" className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             Author *
           </label>
           <input
             id="author"
             name="author"
             required
-            className="w-full rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-800"
+            className="input-field"
           />
         </div>
         <div>
-          <label htmlFor="isbn" className="mb-1 block text-sm font-medium">
+          <label htmlFor="isbn" className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             ISBN
           </label>
           <input
             id="isbn"
             name="isbn"
-            className="w-full rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-800"
+            className="input-field"
           />
         </div>
         <div>
-          <label htmlFor="category" className="mb-1 block text-sm font-medium">
+          <label htmlFor="category" className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             Category
           </label>
           <input
             id="category"
             name="category"
-            className="w-full rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-800"
+            className="input-field"
           />
         </div>
         <div>
-          <label htmlFor="publishedYear" className="mb-1 block text-sm font-medium">
+          <label htmlFor="publishedYear" className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             Published Year
           </label>
           <input
@@ -155,12 +157,12 @@ export function NewBookForm() {
             type="number"
             min="1"
             max="2100"
-            className="w-full rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-800"
+            className="input-field"
           />
         </div>
         <div>
           <div className="mb-1 flex items-center justify-between">
-            <label htmlFor="description" className="block text-sm font-medium">
+            <label htmlFor="description" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
               Description
             </label>
             <button
@@ -172,30 +174,27 @@ export function NewBookForm() {
                 handleGenerateDescription(title, author, category);
               }}
               disabled={generatingDesc}
-              className="text-sm text-blue-600 hover:underline disabled:opacity-50 dark:text-blue-400"
+              className="text-sm font-medium text-indigo-600 hover:text-indigo-500 disabled:opacity-50 dark:text-indigo-400"
             >
-              {generatingDesc ? "Generating…" : "Generate Description with AI"}
+              {generatingDesc ? "Generating…" : "Generate with AI"}
             </button>
           </div>
           <textarea
             id="description"
             name="description"
             rows={4}
-            className="w-full rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-800"
+            className="input-field min-h-[100px] resize-y"
           />
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 pt-2">
           <button
             type="submit"
             disabled={loading}
-            className="rounded bg-zinc-900 px-4 py-2 text-white hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="btn-primary disabled:opacity-50"
           >
             {loading ? "Creating…" : "Create Book"}
           </button>
-          <Link
-            href="/books"
-            className="rounded border border-zinc-300 px-4 py-2 hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
-          >
+          <Link href="/books" className="btn-secondary">
             Cancel
           </Link>
         </div>

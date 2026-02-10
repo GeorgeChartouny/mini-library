@@ -13,20 +13,19 @@ export default async function UsersPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Link
-          href="/"
-          className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-        >
-          ← Dashboard
-        </Link>
+    <div className="space-y-8">
+      <Link href="/" className="btn-secondary inline-flex">
+        ← Dashboard
+      </Link>
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          User management
+        </h1>
+        <p className="mt-2 text-zinc-500 dark:text-zinc-400">
+          Change a user’s role or remove their account. You cannot change or
+          remove your own account.
+        </p>
       </div>
-      <h1 className="text-2xl font-bold">User management</h1>
-      <p className="text-sm text-zinc-500 dark:text-zinc-400">
-        Change a user’s role or remove their account. You cannot change or
-        remove your own account.
-      </p>
       <UsersManagement currentUserEmail={session.user?.email ?? undefined} />
     </div>
   );

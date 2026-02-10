@@ -13,26 +13,33 @@ export default async function BooksPage({
   const { query = "", status = "ALL", sort = "title" } = await searchParams;
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">Books</h1>
-        <div className="flex items-center gap-2">
-          <Link
-            href="/books/suggest"
-            className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-100 dark:border-zinc-600 dark:hover:bg-zinc-800"
-          >
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+            Books
+          </h1>
+          <p className="mt-1 text-zinc-500 dark:text-zinc-400">
+            Search, filter, and manage the collection.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Link href="/books/suggest" className="btn-secondary">
             Find a book (AI)
           </Link>
           {canMutate && (
-            <Link
-              href="/books/new"
-              className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-            >
+            <Link href="/books/new" className="btn-primary">
               Add Book
             </Link>
           )}
         </div>
       </div>
-      <Suspense fallback={<div className="text-zinc-500">Loading…</div>}>
+      <Suspense
+        fallback={
+          <div className="card flex items-center justify-center py-12">
+            <p className="text-zinc-500 dark:text-zinc-400">Loading…</p>
+          </div>
+        }
+      >
         <BooksPageContent query={query} status={status} sort={sort} canMutate={canMutate} />
       </Suspense>
     </div>

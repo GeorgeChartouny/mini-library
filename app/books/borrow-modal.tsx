@@ -81,19 +81,19 @@ export function BorrowModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
       onClick={(e) => e.target === e.currentTarget && onClose()}
       role="dialog"
       aria-modal="true"
       aria-labelledby="borrow-modal-title"
     >
       <div
-        className="w-full max-w-md rounded-lg border border-zinc-200 bg-white p-6 shadow-xl dark:border-zinc-800 dark:bg-zinc-900"
+        className="card w-full max-w-md p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <h2
           id="borrow-modal-title"
-          className="mb-4 text-lg font-semibold text-zinc-900 dark:text-zinc-100"
+          className="mb-5 text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100"
         >
           Borrow (Check-out){bookTitle ? `: ${bookTitle}` : ""}
         </h2>
@@ -113,7 +113,7 @@ export function BorrowModal({
               required
               autoFocus
               placeholder="Enter name"
-              className="w-full rounded border border-zinc-300 px-3 py-2 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+              className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm transition focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
             />
           </div>
           <div>
@@ -133,10 +133,10 @@ export function BorrowModal({
               }}
               onBlur={() => setEmailError(validateEmail(borrowerEmail))}
               placeholder="borrower@example.com"
-              className={`w-full rounded border px-3 py-2 focus:outline-none focus:ring-1 dark:bg-zinc-800 dark:text-zinc-100 ${
+              className={`w-full rounded-lg border bg-white px-3 py-2 text-sm transition focus:outline-none focus:ring-1 dark:bg-zinc-800 dark:text-zinc-100 ${
                 emailError
                   ? "border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-500"
-                  : "border-zinc-300 focus:border-zinc-500 focus:ring-zinc-500 dark:border-zinc-600"
+                  : "border-zinc-300 focus:border-indigo-500 focus:ring-indigo-500 dark:border-zinc-600"
               }`}
               aria-invalid={!!emailError}
               aria-describedby={emailError ? "borrow-modal-email-error" : undefined}
@@ -168,10 +168,10 @@ export function BorrowModal({
               }}
               onBlur={() => setPhoneError(validatePhone(borrowerPhone))}
               placeholder="+1 234 567 8900"
-              className={`w-full rounded border px-3 py-2 focus:outline-none focus:ring-1 dark:bg-zinc-800 dark:text-zinc-100 ${
+              className={`w-full rounded-lg border bg-white px-3 py-2 text-sm transition focus:outline-none focus:ring-1 dark:bg-zinc-800 dark:text-zinc-100 ${
                 phoneError
                   ? "border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-500"
-                  : "border-zinc-300 focus:border-zinc-500 focus:ring-zinc-500 dark:border-zinc-600"
+                  : "border-zinc-300 focus:border-indigo-500 focus:ring-indigo-500 dark:border-zinc-600"
               }`}
               aria-invalid={!!phoneError}
               aria-describedby={phoneError ? "borrow-modal-phone-error" : undefined}
@@ -199,22 +199,22 @@ export function BorrowModal({
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
               min={new Date().toISOString().slice(0, 10)}
-              className="w-full rounded border border-zinc-300 px-3 py-2 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+              className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm transition focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
             />
           </div>
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-3 pt-4">
             <button
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="rounded border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 disabled:opacity-50 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="btn-secondary"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading || !borrowerName.trim()}
-              className="rounded bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              className="btn-primary disabled:opacity-50"
             >
               {loading ? "Borrowing…" : "Borrow"}
             </button>

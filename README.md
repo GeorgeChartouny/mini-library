@@ -55,6 +55,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+**Testing:** For the purpose of testing, all signed-in users have the Admin role so you can see and use full functionality (user management, add/edit/delete books, borrow/return, etc.).
+
 ---
 
 ## Borrow / Return
@@ -80,12 +82,25 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deploy (e.g. Vercel)
 
+### Option A: Vercel Dashboard
+
 1. **Push** your repo to GitHub (if not already).
-2. In [Vercel](https://vercel.com), **Import** the repo and deploy.
-3. In the project **Settings → Environment Variables**, add all variables from `.env.example` (see table above). For production:
-   - `NEXTAUTH_URL` = your Vercel URL (e.g. `https://your-app.vercel.app`).
+2. In [Vercel](https://vercel.com), **Import** the repo.
+3. Set the **project name** to include `george-chartouny` (e.g. `george-chartouny-mini-library`) so the URL is `https://george-chartouny-mini-library.vercel.app` (or `https://george-chartouny-mini-library-<your-username>.vercel.app`).
+4. In **Settings → Environment Variables**, add all variables from `.env.example` (see table above). For production:
+   - `NEXTAUTH_URL` = your Vercel URL (e.g. `https://george-chartouny-mini-library.vercel.app`).
    - For **database:** Vercel serverless does not persist a local SQLite file. Use a hosted database (e.g. [Turso](https://turso.tech) for SQLite, or Postgres/Neon) and set `DATABASE_URL` accordingly; you may need to switch the Prisma datasource or adapter for that provider.
-4. **Redeploy** after setting env vars.
+5. Deploy. The project uses `vercel.json` with build command `prisma generate && next build` (no DB seed during build).
+
+### Option B: Vercel CLI
+
+From the project root (logged in with `npx vercel login` if needed):
+
+```bash
+npx vercel deploy --prod
+```
+
+When prompted for **project name**, enter `george-chartouny-mini-library` to get that name in the URL. Set environment variables in the [Vercel dashboard](https://vercel.com/dashboard) (Settings → Environment Variables) and redeploy.
 
 After deploy, set your **live URL** in this README (e.g. replace `https://mini-library.vercel.app` with your real Vercel URL).
 

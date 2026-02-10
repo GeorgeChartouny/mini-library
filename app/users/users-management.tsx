@@ -94,14 +94,16 @@ export function UsersManagement({
 
   if (loading) {
     return (
-      <p className="text-zinc-500 dark:text-zinc-400">Loading users…</p>
+      <div className="card flex items-center justify-center py-12">
+        <p className="text-zinc-500 dark:text-zinc-400">Loading users…</p>
+      </div>
     );
   }
 
   if (error) {
     return (
       <div
-        className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400"
+        className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400"
         role="alert"
       >
         {error}
@@ -111,9 +113,9 @@ export function UsersManagement({
 
   if (users.length === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-zinc-300 py-12 text-center text-zinc-500 dark:border-zinc-700">
-        No users found.
-      </p>
+      <div className="card py-16 text-center">
+        <p className="text-zinc-500 dark:text-zinc-400">No users found.</p>
+      </div>
     );
   }
 
@@ -121,65 +123,82 @@ export function UsersManagement({
     r === "ADMIN" ? "Admin" : r === "LIBRARIAN" ? "Librarian" : "Normal";
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-      <table className="w-full text-left text-sm">
-        <thead>
-          <tr className="border-b border-zinc-200 dark:border-zinc-700">
-            <th className="p-3 font-medium">Name</th>
-            <th className="p-3 font-medium">Email</th>
-            <th className="p-3 font-medium">Role</th>
-            <th className="p-3 font-medium">Change to</th>
-            <th className="p-3 font-medium">Remove</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr
-              key={user.id}
-              className="border-b border-zinc-100 dark:border-zinc-800"
-            >
-              <td className="p-3">{user.name ?? "—"}</td>
-              <td className="p-3">{user.email ?? "—"}</td>
-              <td className="p-3">{roleLabel(user.role)}</td>
-              <td className="p-3">
-                <select
-                  value={user.role === "ADMIN" ? "ADMIN" : "MEMBER"}
-                  disabled={updatingId === user.id}
-                  onChange={(e) => {
-                    const v = e.target.value as "ADMIN" | "MEMBER";
-                    if (v !== user.role) changeRole(user.id, v);
-                  }}
-                  className="rounded border border-zinc-300 bg-white px-2 py-1.5 text-sm dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
-                >
-                  <option value="ADMIN">Admin</option>
-                  <option value="MEMBER">Normal</option>
-                </select>
-                {updatingId === user.id && (
-                  <span className="ml-2 text-xs text-zinc-400">Saving…</span>
-                )}
-              </td>
-              <td className="p-3">
-                <button
-                  type="button"
-                  disabled={
-                    deletingId === user.id ||
-                    (currentUserEmail != null && user.email === currentUserEmail)
-                  }
-                  onClick={() => removeUser(user.id, user.email)}
-                  className="rounded border border-red-300 bg-red-50 px-2 py-1.5 text-sm text-red-700 hover:bg-red-100 disabled:opacity-70 dark:border-red-800 dark:bg-red-950 dark:text-red-300 dark:hover:bg-red-900/50"
-                  title={
-                    currentUserEmail != null && user.email === currentUserEmail
-                      ? "You cannot remove your own account"
-                      : undefined
-                  }
-                >
-                  {deletingId === user.id ? "Removing…" : "Remove"}
-                </button>
-              </td>
+    <div className="card overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full text-left text-sm">
+          <thead>
+            <tr className="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800/50">
+              <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                Name
+              </th>
+              <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                Email
+              </th>
+              <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                Role
+              </th>
+              <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                Change to
+              </th>
+              <th className="px-4 py-3 font-semibold text-zinc-700 dark:text-zinc-300">
+                Remove
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr
+                key={user.id}
+                className="border-b border-zinc-100 transition hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800/30"
+              >
+                <td className="px-4 py-3 text-zinc-700 dark:text-zinc-300">
+                  {user.name ?? "—"}
+                </td>
+                <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
+                  {user.email ?? "—"}
+                </td>
+                <td className="px-4 py-3">{roleLabel(user.role)}</td>
+                <td className="px-4 py-3">
+                  <select
+                    value={user.role === "ADMIN" ? "ADMIN" : "MEMBER"}
+                    disabled={updatingId === user.id}
+                    onChange={(e) => {
+                      const v = e.target.value as "ADMIN" | "MEMBER";
+                      if (v !== user.role) changeRole(user.id, v);
+                    }}
+                    className="rounded-lg border border-zinc-300 bg-white px-3 py-1.5 text-sm transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+                  >
+                    <option value="ADMIN">Admin</option>
+                    <option value="MEMBER">Normal</option>
+                  </select>
+                  {updatingId === user.id && (
+                    <span className="ml-2 text-xs text-zinc-400">Saving…</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  <button
+                    type="button"
+                    disabled={
+                      deletingId === user.id ||
+                      (currentUserEmail != null &&
+                        user.email === currentUserEmail)
+                    }
+                    onClick={() => removeUser(user.id, user.email)}
+                    className="rounded-lg border border-red-300 bg-red-50 px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-100 disabled:opacity-70 dark:border-red-800 dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50"
+                    title={
+                      currentUserEmail != null && user.email === currentUserEmail
+                        ? "You cannot remove your own account"
+                        : undefined
+                    }
+                  >
+                    {deletingId === user.id ? "Removing…" : "Remove"}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

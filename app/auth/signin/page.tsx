@@ -45,7 +45,7 @@ export default async function SignInPage({
   const initialError = errorMessage(params.error ?? null);
   const missingEnv = getMissingAuthEnv();
   return (
-    <div className="flex min-h-[60vh] items-center justify-center">
+    <div className="flex min-h-[60vh] flex-col items-center justify-center py-12">
       <SignInClient
         initialError={initialError}
         callbackUrl={params.callbackUrl ?? "/"}
